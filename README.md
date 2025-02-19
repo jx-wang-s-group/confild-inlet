@@ -132,12 +132,16 @@ create a conda environment named "CoNFiLD"
 ## Citation
 If you find our work useful and relevant to your research, please cite:
 ```
-@article{du2024confild,
-    title={CoNFiLD: Conditional Neural Field Latent Diffusion Model Generating Spatiotemporal Turbulence},
-    author={Du, Pan and Parikh, Meet Hemant and Fan, Xiantao and Liu, Xin-Yang and Wang, Jian-Xun},
-    journal={arXiv preprint arXiv:2403.05940},
-    year={2024}
-    }
+@article{du2024conditional,
+  title={Conditional neural field latent diffusion model for generating spatiotemporal turbulence},
+  author={Du, Pan and Parikh, Meet Hemant and Fan, Xiantao and Liu, Xin-Yang and Wang, Jian-Xun},
+  journal={Nature Communications},
+  volume={15},
+  number={1},
+  pages={10416},
+  year={2024},
+  publisher={Nature Publishing Group UK London}
+}
 ``` 
 ## Acknowledgement
 The diffusion model used in this work is based on [OpenAI's implementation](https://github.com/openai/guided-diffusion). The DPS part is based on [Diffusion Posterior Sampling for General Noisy Inverse Problems](https://github.com/DPS2022/diffusion-posterior-sampling)
