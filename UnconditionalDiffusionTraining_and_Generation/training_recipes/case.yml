@@ -1,0 +1,28 @@
+#model:
+batch_size : 32
+test_batch_size : 1 ## no validation set used, this is for bypassing
+
+image_size : 256
+num_channels: 128
+num_res_blocks: 2
+num_head_channels: 64
+attention_resolutions: "32,16,8"
+channel_mult: ""
+
+#diff:
+steps: 1000
+noise_schedule: "cosine"
+
+## train specific args
+microbatch: 8
+lr : 1.e-4
+final_lr : 1.e-6
+ema_rate: 0.9999
+log_interval: 1000
+save_interval: 10000
+lr_anneal_steps: 500000
+
+resume_checkpoint : ""
+log_path : /home/meet/CoNFiLD/test #/add/log/path/here
+train_data_path: /home/xinyang/store/projects/nfdiff/inlet/cnf/opfm/t2/latents.npy #/add/train_data/path/here
+valid_data_path: /home/xinyang/store/projects/nfdiff/inlet/cnf/opfm/t2/latents.npy #/add/valid_data/path/here

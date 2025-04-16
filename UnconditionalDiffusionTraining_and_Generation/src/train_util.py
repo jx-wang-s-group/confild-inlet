@@ -158,9 +158,9 @@ class TrainLoop:
             not self.lr_anneal_steps
             or self.step + self.resume_step < self.lr_anneal_steps
         ):
-            train_batch, = next(self.train_data)
-            valid_batch, = next(self.valid_data)
-            self.run_step(train_batch,valid_batch, None) #self.run_step(batch, cond)
+            train_batch, train_cond= next(self.train_data)
+            valid_batch, valid_cond= next(self.valid_data)
+            self.run_step(train_batch,valid_batch, (train_cond, valid_cond)) #self.run_step(batch, cond)
             if self.step % self.log_interval == 0:
                 logger.dumpkvs()
             if self.step % self.save_interval == 0:
