@@ -53,7 +53,7 @@ class LatentContainer(torch.nn.Module):
         # lumped=False
     ):
         super().__init__()
-        # self.expand_dims = " ".join(["1" for _ in range(dims)]) if not lumped else "1"
+        self.expand_dims = " ".join(["1" for _ in range(dims)])# if not lumped else "1"
         self.expand_dims = f"N f -> N {self.expand_dims} f"
         self.latents = torch.nn.Parameter(
             torch.zeros((N_samples, N_features), dtype=torch.float32)
