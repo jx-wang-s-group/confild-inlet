@@ -172,7 +172,7 @@ class GaussianDiffusion:
                       measurement,
                       measurement_cond_fn,
                       record,
-                      save_root):
+                      save_root, **kwargs):
         """
         The function used for sampling from noise.
         """ 
@@ -184,15 +184,15 @@ class GaussianDiffusion:
             time = torch.tensor([idx] * img.shape[0], device=device)
             
             img = img.requires_grad_()
-            out = self.p_sample(x=img, t=time, model=model)
+            out = self.p_sample(x=img, t=time, model=model, **kwargs)
             
             # Give condition.
-            noisy_measurement = self.q_sample(measurement, t=time)
+            # noisy_measurement = self.q_sample(measurement, t=time)
 
             # TODO: how can we handle argument for different condition method?
             img, distance = measurement_cond_fn(x_t=out['sample'],
                                       measurement=measurement,
-                                      noisy_measurement=noisy_measurement,
+                                    #   noisy_measurement=noisy_measurement,
                                       x_prev=img,
                                       x_0_hat=out['pred_xstart'])
             img = img.detach_()
@@ -205,11 +205,11 @@ class GaussianDiffusion:
 
         return img       
         
-    def p_sample(self, model, x, t):
+    def p_sample(self, model, x, t, **kwargs):
         raise NotImplementedError
 
-    def p_mean_variance(self, model, x, t):
-        model_output = model(x, self._scale_timesteps(t))
+    def p_mean_variance(self, model, x, t, **kwargs):
+        model_output = model(x, self._scale_timesteps(t), **kwargs)
         
         # In the case of "learned" variance, model will give twice channels.
         if model_output.shape[1] == 2 * x.shape[1]:
@@ -361,8 +361,8 @@ class _WrappedModel:
 
 @register_sampler(name='ddpm')
 class DDPM(SpacedDiffusion):
-    def p_sample(self, model, x, t):
-        out = self.p_mean_variance(model, x, t)
+    def p_sample(self, model, x, t, **kwargs):
+        out = self.p_mean_variance(model, x, t, **kwargs)
         sample = out['mean']
 
         noise = torch.randn_like(x)

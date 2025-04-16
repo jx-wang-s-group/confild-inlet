@@ -5,6 +5,8 @@ import torch
 from ConditionalNeuralField.cnf.inference_function import pass_through_model_batch
 from ConditionalNeuralField.cnf.utils.normalize import Normalizer_ts
 from ConditionalNeuralField.cnf.nf_networks import SIRENAutodecoder_film
+from ConditionalNeuralField.scripts.train import trainer
+from basicutility import ReadInput as ri
 import numpy as np
 from einops import rearrange
 # =================
@@ -36,7 +38,23 @@ class NonLinearOperator(ABC):
     @abstractmethod
     def forward(self, data, **kwargs):
         pass
+@register_operator(name='noise')
+class DenoiseOperator(LinearOperator):
+    def __init__(self, device):
+        self.device = device
+    
+    def forward(self, data, **kwargs):
+        return data.to(self.device)
 
+    def transpose(self, data, **kwargs):
+        return data.to(self.device)
+    
+    def ortho_project(self, data, **kwargs):
+        return data.to(self.device)
+
+    def project(self, data, **kwargs):
+        return data.to(self.device)
+    
 @register_operator(name='inpainting')
 class InpaintingOperator(LinearOperator):
     '''This operator get pre-defined mask and return masked image.'''
@@ -224,6 +242,37 @@ class Case4Operator(NonLinearOperator):
         return pass_through_model_batch(self.coords, data_reshaped, self.model, 
                                             self.x_normalizer, self.y_normalizer, self.batch_size,
                                               self.device)
+        
+@register_operator(name='mean_op')
+class ReMeanOperator(NonLinearOperator):
+    def __init__(self, device,
+            model_dets,
+            max_val,
+            min_val,
+            ckpt_id=124600,): 
+    
+        self.device = device
+        yaml = ri.basic_input(model_dets)
+        self.mytrainer = trainer(yaml, infer_mode=True, infer_dps=True)
+        self.mytrainer.load(ckpt_id)
+        self.mytrainer.nf.to(device=device)
+        self.max_val = torch.tensor(max_val, device=device,  dtype=torch.float32)
+        self.min_val = torch.tensor(min_val, device=device,  dtype=torch.float32)
+        
+        coord = torch.linspace(0, 1, 64)
+        self.coord = torch.stack(torch.meshgrid(coord, coord, indexing='ij'), dim=-1).to(device)
+        
+        self.axes_add = 2
+        self.reshape_pattern = "b c f feature -> (b c f) "+ " ".join([f"1" for _ in range(self.axes_add)]) + " feature"
+        
+    def _unnorm(self, norm_data):
+        return ((norm_data + 1)*(self.max_val- self.min_val)/2 + self.min_val)
+
+    def forward(self, data, **kwargs):
+        data = rearrange(self._unnorm(data), self.reshape_pattern)
+        phy_fields = self.mytrainer.infer(self.coord[None], data)
+        return torch.mean(phy_fields, dim=(0,2))[..., 0]
+    
 # =============
 # Noise classes
 # =============

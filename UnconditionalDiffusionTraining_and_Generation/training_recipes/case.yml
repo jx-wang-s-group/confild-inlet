@@ -23,6 +23,6 @@ save_interval: 10000
 lr_anneal_steps: 500000
 
 resume_checkpoint : ""
-log_path : /home/meet/CoNFiLD/test #/add/log/path/here
-train_data_path: /home/xinyang/store/projects/nfdiff/inlet/cnf/opfm/t2/latents.npy #/add/train_data/path/here
-valid_data_path: /home/xinyang/store/projects/nfdiff/inlet/cnf/opfm/t2/latents.npy #/add/valid_data/path/here
+log_path : /add/log/path/here
+train_data_path: /add/train_data/path/here
+valid_data_path: /add/valid_data/path/here

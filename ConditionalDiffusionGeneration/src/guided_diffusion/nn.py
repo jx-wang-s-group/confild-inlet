@@ -121,6 +121,18 @@ def timestep_embedding(timesteps, dim, max_period=10000):
     return embedding
 
 
+class Re_embedding(nn.Module):
+    def __init__(self, dim):
+        super().__init__()
+        self.dim = dim
+        self.mlp = nn.Linear(1, dim)
+
+    def forward(self, Re):
+        pos_seq = Re.unsqueeze(-1).float()  # (N, 1)
+        pos_embedding = self.mlp(pos_seq)  # (N, dim) .to(device=pos_seq.device))
+        return pos_embedding 
+    
+
 def checkpoint(func, inputs, params, flag):
     """
     Evaluate a function without caching intermediate activations, allowing for
