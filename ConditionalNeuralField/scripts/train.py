@@ -50,10 +50,10 @@ class LatentContainer(torch.nn.Module):
         N_samples,
         N_features,
         dims,
-        lumped=False
+        # lumped=False
     ):
         super().__init__()
-        self.expand_dims = " ".join(["1" for _ in range(dims)]) if not lumped else "1"
+        # self.expand_dims = " ".join(["1" for _ in range(dims)]) if not lumped else "1"
         self.expand_dims = f"N f -> N {self.expand_dims} f"
         self.latents = torch.nn.Parameter(
             torch.zeros((N_samples, N_features), dtype=torch.float32)
@@ -512,7 +512,7 @@ class trainer(object):
             else:
                 self.N_samples = checkpoint["hidden_states"]["latents"].shape[0]
             self.latents = LatentContainer(
-                self.N_samples, self.hyper_para.hidden_size, self.hyper_para.dims, self.hyper_para.lumped_latent
+                self.N_samples, self.hyper_para.hidden_size, self.hyper_para.dims, #self.hyper_para.lumped_latent
             )
             self.latents.load_state_dict(checkpoint["hidden_states"])
 

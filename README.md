@@ -1,9 +1,11 @@
-# CoNFILD
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14058397.svg)](https://doi.org/10.5281/zenodo.14058397) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14037782.svg)](https://doi.org/10.5281/zenodo.14037782)
+# CoNFiLD-inlet
 
-This is the codebase for the paper [P. Du, MH. Parikh, X. Fan, X.-Y. Liu, J.-X. Wang. Conditional neural field latent diffusion model for generating spatiotemporal turbulence. *Nature Communications* 15, 10416 (2024)] [https://doi.org/10.1038/s41467-024-54712-1](https://doi.org/10.1038/s41467-024-54712-1)
+This is the codebase for the paper [CoNFiLD-inlet: Synthetic Turbulence Inflow Using Generative Latent Diffusion Models with Neural Fields. Liu, X.Y., Parikh, M.H., Fan, X., Du, P., Wang, Q., Chen, Y.F. and Wang, J.X., 2024.](https://arxiv.org/abs/2411.14378)
 
 <p align="center"><img src="figs/method.png" alt="structure" align="center" width="600px"></p>
+
+> This work shares most code with our previous work [CoNFiLD](https://www.nature.com/articles/s41467-024-54712-1) with necessary improvement for generalize over a wide range of Reynolds numbers. 
+> You can check out the code for CoNFiLD [here](https://github.com/jx-wang-s-group/CoNFiLD).
 
 ## Create python Environment
 
@@ -33,7 +35,7 @@ create a conda environment named "CoNFiLD"
     set -o allexport && source .env && set +o allexport
     ```
   
-## Using pretrained CoNFiLD
+<!-- ## Using pretrained CoNFiLD
 
 ### Download pretrained model
 * The trained model parameters associated with this code can be downloaded [here](https://zenodo.org/records/14058363)
@@ -124,15 +126,15 @@ create a conda environment named "CoNFiLD"
         |-- train_data.npy # training data
         | 
         |-- valid_data.npy # validation data
-        ```
+        ``` -->
 
 ## Issues?
-* If you have an issue in running the code please [raise an issue](https://github.com/jx-wang-s-group/CoNFiLD/issues)
+* If you have an issue in running the code please [raise an issue](https://github.com/jx-wang-s-group/confild-inlet/issues)
 
 ## Citation
 If you find our work useful and relevant to your research, please cite:
 ```
-@article{du2024conditional,
+<!-- @article{du2024conditional,
   title={Conditional neural field latent diffusion model for generating spatiotemporal turbulence},
   author={Du, Pan and Parikh, Meet Hemant and Fan, Xiantao and Liu, Xin-Yang and Wang, Jian-Xun},
   journal={Nature Communications},
@@ -141,7 +143,7 @@ If you find our work useful and relevant to your research, please cite:
   pages={10416},
   year={2024},
   publisher={Nature Publishing Group UK London}
-}
+} -->
 ``` 
 ## Acknowledgement
 The diffusion model used in this work is based on [OpenAI's implementation](https://github.com/openai/guided-diffusion). The DPS part is based on [Diffusion Posterior Sampling for General Noisy Inverse Problems](https://github.com/DPS2022/diffusion-posterior-sampling)
